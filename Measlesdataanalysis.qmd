@@ -1,0 +1,84 @@
+---
+title: "Measles Data Analysis"
+author: "Darvin Ojha"
+format: html
+editor: visual
+execute:
+  keep-md: true
+---
+
+## Measles Data Analysis
+
+This is an analysis of the measles data among the schools.
+
+```{r}
+#Load the tidyverse
+library(kableExtra)
+library(tidyverse)
+
+
+#Read the measles data file from github
+measles <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-02-25/measles.csv')
+```
+
+```{r}
+#install.packages("tidymodels")
+library(tidymodels)
+
+my_data_splits <- initial_split(measles, prop = 0.5)
+
+exploratory_data <- training(my_data_splits)
+test_data <- testing(my_data_splits)
+
+```
+
+## Interesting Questions to Ask
+
+1.  Is there variability in vaccination rates by the types of schools?
+2.  
+
+## Is there variability in the vaccination rates by the types of schools?
+
+```{r}
+#See the first six rows of the data we've read in to our notebook
+exploratory_data %>% 
+  head(2) %>% 
+  kable() %>% 
+  kable_styling(c("striped","hover"))
+
+exploratory_data %>%
+  count(state) %>%
+  arrange(-n)
+
+exploratory_data %>%
+  group_by(type) %>%
+  summarize(avg_mmr_vaxx_rate = mean(mmr),
+            count = n()) %>%
+  arrange(-avg_mmr_vaxx_rate)
+
+
+exploratory_data %>%
+  ggplot()+geom_boxplot(aes(x=type,y=mmr))
+
+exploratory_data
+```
+
+Looking at the boxplot, BOCES has comparatively highest vaccination rates compared to other types of schools. Whereas, the charter schools had the lowest vaccination rates compared to the other types of schools.
+
+1.  What was the average vaccination rate in the United States over the period covered by the data set?
+
+2.  Which year had the highest vaccination rate in the United States, and which year had the lowest vaccination rate?
+
+### Here we will find the highest number of reported measles cases in a single year in the United States, and in which year it occurred.
+
+```{r}
+# What was the highest number of reported measles cases in a single year in the United States, and in which year did it occur?
+
+
+max_cases <- max(exploratory_data$measles)
+max_year <- exploratory_data$year[which.max(exploratory_data$measles)]
+cat("The highest number of reported measles cases was", max_cases, "and it occurred in", max_year, "\n")
+
+```
+
+### 
