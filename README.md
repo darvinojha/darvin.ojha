@@ -47,7 +47,7 @@ analytics:
   plausible:
     enabled: true
     site_fqdn: 'lightspeed.tajacks.com'
-    script_source: 'https://plausible.io/js/script.js'
+    script_source: 'PalmerPenguinsAnalysis.html'
 ```
 
 `enabled` - Boolean - To enable or disable page-view analytics.
